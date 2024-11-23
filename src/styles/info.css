@@ -1,0 +1,27 @@
+.info-section {
+  display: flex;
+  flex-direction: row; /* Align boxes horizontally */
+  justify-content: space-evenly; /* Evenly space the boxes */
+  align-items: stretch; /* Ensure all boxes have the same height */
+  gap: 20px; /* Add spacing between sections */
+  margin: 20px 0; /* Add margin around the container */
+}
+
+.info-box {
+  background-color: rgba(255, 255, 255, 0.1); /* Add a subtle background for separation */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
+  color: white;
+  flex: 1; /* Ensure all boxes have equal width */
+  display: flex; /* Allows inner content alignment */
+  flex-direction: column; /* Keep content vertically aligned */
+  justify-content: space-between; /* Align content evenly inside */
+}
+
+.response-text {
+  white-space: pre-wrap; /* Preserve newlines from AI response */
+  word-break: break-word; /* Ensure long words don't overflow */
+  margin: 0; /* Avoid extra spacing */
+
+}

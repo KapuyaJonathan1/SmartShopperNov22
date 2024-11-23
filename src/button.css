@@ -1,0 +1,11 @@
+button {
+
+  color: white;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: gray solid 10px;
+}
