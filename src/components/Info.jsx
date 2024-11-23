@@ -10,9 +10,9 @@ function Info({ health, budget, image, switchPage }) {
 - Three health drawbacks (3-5 words each).
 Do not add any extra text, introductions, or conclusions.`;
   let budgetPrompt = `If the image does not depict food, respond only with: "Unrecognized food." For food, state:
-- Is this product cheap or expensive compared to similar products, considering their budget: ${budget}? 
+- Is this product within their budget: ${budget}? 
 - Is this product generally within budget?
-Each answer should be brief (3-5 words). Do not add extra text, introductions, or conclusions.`;
+Each answer should be brief.`;
 let alternativesPrompt = `
 If the image does not depict food, respond only with: "Unrecognized food." For food, list:
 - 1-3 specific, in-store alternatives for this product, list the brand and name of the product, considering:
