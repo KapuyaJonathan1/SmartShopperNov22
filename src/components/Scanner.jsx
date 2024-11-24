@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-function Scanner({ setHealth, setBudget, health, budget, onImageCapture, switchPage }) { // Accept the onImageCapture prop from the parent
+function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImageCapture, switchPage }) { // Accept the onImageCapture prop from the parent
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -66,9 +66,9 @@ function Scanner({ setHealth, setBudget, health, budget, onImageCapture, switchP
   return (
     <div className="container d-flex flex-column justify-content-center gradient-bg" style={{height: "100vh", margin: "0"}}>
       <div className="d-flex" style={{width: "100vw"}}>
-        <div class="btn-group" style={{width: "17vw"}}>
-          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Budget: {budget}
+        <div class="btn-group" style={{justifyContent: "space-evenly"}}>
+          <button flex-grow-1 type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Budget: <br/>{budget}
           </button>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#" onClick={() => setBudget("Low")}>Low</a>
@@ -77,9 +77,21 @@ function Scanner({ setHealth, setBudget, health, budget, onImageCapture, switchP
             <a class="dropdown-item" href="#" onClick={() => setBudget("Super High")}>Super High</a>
           </div>
         </div>
-        <div class="btn-group" style={{width: "17vw"}}>
-          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Health Importance: {health}
+        <div class="btn-group" style={{justifyContent: "space-evenly"}}>
+          <button flex-grow-1 type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Store: <br/>{store}
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#" onClick={() => setStore("Safeway")}>Safeway</a>
+            <a class="dropdown-item" href="#" onClick={() => setStore("Trader Joe's")}>Trader Joe's</a>
+            <a class="dropdown-item" href="#" onClick={() => setStore("Costco")}>Costco</a>
+            <a class="dropdown-item" href="#" onClick={() => setStore("Walmart")}>Walmart</a>
+            <a class="dropdown-item" href="#" onClick={() => setStore("Whole Foods")}>Whole Foods</a>
+          </div>
+        </div>
+        <div class="btn-group" style={{justifyContent: "space-evenly"}}>
+          <button flex-grow-1 type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Health Importance:<br/>{health}
           </button>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#" onClick={() => setHealth("Low")}>Low</a>

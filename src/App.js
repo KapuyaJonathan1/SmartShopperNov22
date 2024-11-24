@@ -10,6 +10,7 @@ function App() {
   const [scanning, setScanning] = useState(true);
   const [budget, setBudget] = useState("Medium")
   const [health, setHealth] = useState("Medium")
+  const [store, setStore] = useState("Safeway")
   const switchPage = () => {
 
     setScanning(!scanning);
@@ -24,11 +25,11 @@ function App() {
   return (
     <div className="App">
       <div style={{display: scanning ? 'flex' : 'none'}}>
-        <Scanner setHealth={setHealth} setBudget={setBudget} health={health} budget={budget} onImageCapture={handleImageCapture} switchPage={switchPage} />
+        <Scanner setHealth={setHealth} setBudget={setBudget} health={health} budget={budget} setStore={setStore} store={store} onImageCapture={handleImageCapture} switchPage={switchPage} />
       </div>
 
       <div style={{display: scanning ? 'none' : 'flex'}}>
-        <Info health={health} budget={budget} image={capturedImage} switchPage={switchPage} />
+        <Info health={health} budget={budget} image={capturedImage} store={store} switchPage={switchPage} />
       </div>
     </div>
   );

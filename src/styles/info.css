@@ -16,7 +16,7 @@
   flex: 1; /* Ensure all boxes have equal width */
   display: flex; /* Allows inner content alignment */
   flex-direction: column; /* Keep content vertically aligned */
-  justify-content: space-between; /* Align content evenly inside */
+  justify-content: flex-start; /* Align content evenly inside */
 }
 
 .response-text {

@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Info({ health, budget, image, switchPage }) {
+function Info({ health, budget, image, store, switchPage }) {
   const [information, setInformation] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const healthPrompt = `If the image does not depict food, respond only with: "Unrecognized food." For food, provide exactly:
 - Three health benefits (3-5 words each).
 - Three health drawbacks (3-5 words each).
-Do not add any extra text, introductions, or conclusions.`;
+Do not add any extra text, introductions, or conclusions. Seperate the sections with a header for advantages and disadvantages`;
   let budgetPrompt = `If the image does not depict food, respond only with: "Unrecognized food." For food, state:
 - Is this product within their budget: ${budget}? 
 - Is this product generally within budget?
-Each answer should be brief.`;
+Answer in one readable sentence like: This product is within budget.`;
 let alternativesPrompt = `
-If the image does not depict food, respond only with: "Unrecognized food." For food, list:
+list:
 - 1-3 specific, in-store alternatives for this product, list the brand and name of the product, considering:
   - Its health benefits/drawbacks.
   - The user's health preference: ${health}.
-  - Budget constraints: ${budget}.
-Each alternative should be brief (3-5 words). Do not add any extra text, introductions, or conclusions.
+  - The user's budget is: ${budget}.
+  - The user is in ${store}
+Each alternative should be brief (3-5 words). Do not add any extra text, introductions, or conclusions. If the image is not food, respond with: "Unrecognized food."
 `;
 
   async function getInfo() {
