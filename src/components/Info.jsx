@@ -26,7 +26,7 @@ Each alternative should be brief (3-5 words). Do not add any extra text, introdu
   async function getInfo() {
     setLoading(true);
     try {
-      const response1 = await axios.post("http://localhost:5000/api/get-info", {
+      const response1 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
         prompt: healthPrompt,
         image: image,
         path: './images/image.png',
@@ -36,13 +36,13 @@ Each alternative should be brief (3-5 words). Do not add any extra text, introdu
         budgetPrompt="Say: Unrecognized food"
         alternativesPrompt="Say: Unrecognized food"
       }
-      const response2 = await axios.post("http://localhost:5000/api/get-info", {
+      const response2 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
         prompt: budgetPrompt,
         image: image,
         path: './images/image.png',
         delete: false
       });
-      const response3 = await axios.post("http://localhost:5000/api/get-info", {
+      const response3 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
         prompt: alternativesPrompt,
         image: image,
         path: './images/image.png',
