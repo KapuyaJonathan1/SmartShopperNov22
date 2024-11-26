@@ -122,8 +122,10 @@ app.post('/api/get-info', async (req, res) => {
 });
 
 // Serve React frontend
+const buildPath = path.join(__dirname, '../build'); // Adjust to the correct path
+app.use(express.static(buildPath));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 // Start server
