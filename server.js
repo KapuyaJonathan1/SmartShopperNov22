@@ -6,23 +6,28 @@ require('dotenv').config();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const bodyParser = require('body-parser');
 const path = require('path');
-// Set limits for body-parser
+const fetch = require('node-fetch'); // Ensure fetch is available
+
 const app = express();
+
+// Middleware
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
-app.use(express.json());
-app.use(express.json({ limit: '50mb' })); // Increase JSON payload limit
-app.use(express.urlencoded({ limit: '50mb', extended: true })); // For form-encoded data
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'build'))); // Serve static files
+
 // Google OAuth2 Configuration
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const oAuth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+
+// Image paths
 const imagePath = path.join(__dirname, 'images', `image.png`);
-const mediaPath = './images'
+const mediaPath = './images';
+
+// Route: Save Image
 app.post('/api/save-image', (req, res) => {
   const { image } = req.body;
 
@@ -30,13 +35,8 @@ app.post('/api/save-image', (req, res) => {
     return res.status(400).json({ error: 'Image data is required' });
   }
 
-  // Remove the Base64 header (e.g., "data:image/png;base64,")
   const base64Data = image.replace(/^data:image\/png;base64,/, '');
 
-  // Define the path to save the image
-  const imagePath = path.join(__dirname, 'images', `image.png`);
-
-  // Save the image
   fs.writeFile(imagePath, base64Data, 'base64', (err) => {
     if (err) {
       console.error('Error saving image:', err);
@@ -51,7 +51,7 @@ app.post('/api/save-image', (req, res) => {
 app.get('/auth', (req, res) => {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/generative-language.tuning']
+    scope: ['https://www.googleapis.com/auth/generative-language.tuning'],
   });
   res.redirect(authUrl);
 });
@@ -77,81 +77,16 @@ app.get('/callback', async (req, res) => {
   }
 });
 
-// Route: Generate Content with OAuth Token
-// app.post('/api/get-info', async (req, res) => {
-//   const { prompt } = req.body;
-
-//   try {
-//     oAuth2Client.setCredentials({
-//       refresh_token: process.env.REFRESH_TOKEN,
-//     });
-
-//     const token = await oAuth2Client.getAccessToken();
-//     console.log('Access Token:', token.token);
-
-//     const response = await fetch(
-//       'https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5-flash:generateText',
-//       {
-//         method: 'POST',
-//         headers: {
-//           Authorization: `Bearer ${token.token}`,
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//           model: 'models/gemini-1.5-flash',
-//           prompt: {
-//             text: prompt,
-//           },
-//         }),
-//       }
-//     );
-
-//     console.log('Response Status:', response.status);
-//     console.log('Response Headers:', response.headers);
-
-//     const data = await response.json();
-//     console.log('Full API Response:', data);
-
-//     // Check for errors in the response before accessing candidates
-//     if (!data.error && data.candidates && data.candidates.length > 0) {
-//       const generatedText = data.candidates[0].output;
-//       res.json({ information: generatedText });
-//     } else {
-//       // Log error or send a different response
-//       console.error('API returned an error or no candidates:', data.error || 'No candidates available');
-//       res.status(500).json({ error: 'Failed to generate content' });
-//     }
-//   } catch (error) {
-//     console.error('Error generating content:', error);
-//     res.status(500).json({ error: 'Failed to fetch information from Gemini.' });
-//   }
-// });
-const fetch = require('node-fetch'); // Ensure fetch is available
-
-
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
+// Route: Generate Content
 app.post('/api/get-info', async (req, res) => {
   const { prompt } = req.body;
   console.log(prompt);
 
   try {
-    // Set the credentials
     oAuth2Client.setCredentials({
       refresh_token: process.env.REFRESH_TOKEN,
     });
 
-    // Get the access token
-    const token = await oAuth2Client.getAccessToken();
-
-    // Correct the endpoint URL
-    // const url = `https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5-flash`;
-
-    // Make sure to include these imports:
-// import { GoogleGenerativeAI } from "@google/generative-ai";
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -164,30 +99,20 @@ app.post('/api/get-info', async (req, res) => {
       };
     }
 
-    // Note: The only accepted mime types are some image types, image/*.
-    const imagePart = fileToGenerativePart(
-      `${mediaPath}/image.png`,
-      "image/png",
-    );
-
+    const imagePart = fileToGenerativePart(`${mediaPath}/image.png`, "image/png");
     const result = await model.generateContent([prompt, imagePart]);
-    console.log(result.response.text());
 
     if (result.response.text()) {
-      const generatedText = result.response.text();
-      res.json({ information: generatedText });
+      res.json({ information: result.response.text() });
     } else {
       res.status(500).json({ error: 'Failed to generate content' });
     }
-    
-    // Delete the image after responding or on failure
+
+    // Optionally delete the image
     if (req.body.delete) {
       fs.unlink(imagePath, (err) => {
-        if (err) {
-          console.error("Error deleting image:", err);
-        } else {
-          console.log("Image deleted successfully:", imagePath);
-        }
+        if (err) console.error("Error deleting image:", err);
+        else console.log("Image deleted successfully:", imagePath);
       });
     }
   } catch (error) {
@@ -196,6 +121,12 @@ app.post('/api/get-info', async (req, res) => {
   }
 });
 
+// Serve React frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
