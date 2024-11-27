@@ -14,7 +14,6 @@ const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'build'))); // Serve static files
 
 // Google OAuth2 Configuration
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -122,8 +121,10 @@ app.post('/api/get-info', async (req, res) => {
 });
 
 // Serve React frontend
-const buildPath = path.join(__dirname, '../build'); // Adjust to the correct path
+const buildPath = path.join(__dirname, 'build');
 app.use(express.static(buildPath));
+
+// Serve index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
