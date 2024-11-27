@@ -7,7 +7,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const bodyParser = require('body-parser');
 const path = require('path');
 const fetch = require('node-fetch'); // Ensure fetch is available
-
+const { v4: uuidv4 } = require('uuid');
 const app = express();
 
 // Middleware
@@ -34,15 +34,23 @@ app.post('/api/save-image', (req, res) => {
     return res.status(400).json({ error: 'Image data is required' });
   }
 
+  // Generate a unique ID and filename
+  const uid = uuidv4();
+  const filename = `${uid}.png`;
+  const imagePath = path.join(__dirname, 'images', filename);
+
+  // Remove the Base64 header
   const base64Data = image.replace(/^data:image\/png;base64,/, '');
 
+  // Save the image
   fs.writeFile(imagePath, base64Data, 'base64', (err) => {
     if (err) {
       console.error('Error saving image:', err);
       return res.status(500).json({ error: 'Failed to save image' });
     }
 
-    res.status(200).json({ message: 'Image saved successfully', path: imagePath });
+    // Return the UID to the client
+    res.status(200).json({ message: 'Image saved successfully', uid });
   });
 });
 
@@ -78,14 +86,21 @@ app.get('/callback', async (req, res) => {
 
 // Route: Generate Content
 app.post('/api/get-info', async (req, res) => {
-  const { prompt } = req.body;
-  console.log(prompt);
+  const { prompt, uid } = req.body;
+
+  if (!uid) {
+    return res.status(400).json({ error: 'UID is required' });
+  }
+
+  const imagePath = path.join(__dirname, 'images', `${uid}.png`);
 
   try {
-    oAuth2Client.setCredentials({
-      refresh_token: process.env.REFRESH_TOKEN,
-    });
+    // Ensure the image exists
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
 
+    // Process the image with AI
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -98,25 +113,24 @@ app.post('/api/get-info', async (req, res) => {
       };
     }
 
-    const imagePart = fileToGenerativePart(`${mediaPath}/image.png`, "image/png");
+    const imagePart = fileToGenerativePart(imagePath, "image/png");
     const result = await model.generateContent([prompt, imagePart]);
 
-    if (result.response.text()) {
-      res.json({ information: result.response.text() });
-    } else {
-      res.status(500).json({ error: 'Failed to generate content' });
-    }
+    const generatedText = result.response.text();
 
-    // Optionally delete the image
-    if (req.body.delete) {
-      fs.unlink(imagePath, (err) => {
-        if (err) console.error("Error deleting image:", err);
-        else console.log("Image deleted successfully:", imagePath);
-      });
-    }
+    // Delete the image after processing
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error("Error deleting image:", err);
+      } else {
+        console.log(`Image ${uid} deleted successfully.`);
+      }
+    });
+
+    res.json({ information: generatedText || "No response from AI" });
   } catch (error) {
     console.error('Error generating content:', error);
-    res.status(500).json({ error: 'Failed to fetch information from Gemini.' });
+    res.status(500).json({ error: 'Failed to fetch information from AI.' });
   }
 });
 
