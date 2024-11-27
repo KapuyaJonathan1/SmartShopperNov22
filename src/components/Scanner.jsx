@@ -39,20 +39,21 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
   
+      // Convert the canvas image to Base64
       const imageDataUrl = canvas.toDataURL('image/png');
+      onImageCapture(imageDataUrl, false, health, budget); // Optional: Pass the image to the parent if needed
   
+
       try {
         // Send the image to the backend
-        const response = await fetch('https://smartshoppernov22.onrender.com/api/save-image', {
+        const response = await fetch('http://localhost:5000/api/save-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ image: imageDataUrl }),
         });
   
-        const data = await response.json();
-        if (response.ok && data.uid) {
-          console.log('Image saved successfully with UID:', data.uid);
-          onImageCapture(imageDataUrl, false, health, budget, data.uid); // Pass UID to parent
+        if (response.ok) {
+          console.log('Image saved successfully!');
         } else {
           console.error('Failed to save the image.');
         }
