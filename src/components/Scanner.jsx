@@ -46,7 +46,7 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
 
       try {
         // Send the image to the backend
-        const response = await fetch('http://localhost:5000/api/save-image', {
+        const response = await fetch('https://smartshoppernov22.onrender.com/api/save-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ image: imageDataUrl }),
