@@ -4,6 +4,9 @@ import './styles/scanner.css';
 import './styles/info.css';
 import Scanner from './components/Scanner';
 import Info from './components/Info';
+import ProtectedRoute from "./components/ProtectedRoute"
+import { AuthProvider } from "./AuthContext";
+import Login from './components/Login';
 function App() {
   const [capturedImage, setCapturedImage] = useState(null); // Initialize state for captured image
   const [budget, setBudget] = useState("Medium")
@@ -14,25 +17,27 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route
-              path="/scanner"
-              element={
-                <Scanner setHealth={setHealth} setBudget={setBudget} health={health} budget={budget} setStore={setStore} store={store} onImageCapture={handleImageCapture}/>
-            }
-          />
-          <Route
-              path="/info"
-              element={
-                <Info health={health} budget={budget} image={capturedImage} store={store}/>
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+                path="/scanner"
+                element={
+                  <ProtectedRoute><Scanner setHealth={setHealth} setBudget={setBudget} health={health} budget={budget} setStore={setStore} store={store} onImageCapture={handleImageCapture}/></ProtectedRoute>
+              }
+            />
+            <Route
+                path="/info"
+                element={ <ProtectedRoute><Info health={health} budget={budget} image={capturedImage} store={store}/></ProtectedRoute>
+              }
+            />
+          </Routes>
+      </Router>
+    </AuthProvider>
   );
+
+  
 }
 
 export default App;
