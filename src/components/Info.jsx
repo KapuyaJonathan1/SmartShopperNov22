@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 function Info({ health, budget, image, store, switchPage }) {
   const [information, setInformation] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const healthPrompt = `If the image does not depict food, respond only with: "Unrecognized food." For food, provide exactly:
 - Three health benefits (3-5 words each).
@@ -106,7 +107,7 @@ Each alternative should be brief (3-5 words). Do not add any extra text, introdu
         </button>
         <button onClick={() => {
                   setInformation([]); // Clear the information
-                  switchPage(); // Switch the page
+                  navigate("/scanner") // Switch the page
                 }} className="btn btn-secondary">
           Back
         </button>

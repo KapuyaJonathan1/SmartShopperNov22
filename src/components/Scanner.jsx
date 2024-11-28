@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-
-function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImageCapture, switchPage }) { // Accept the onImageCapture prop from the parent
+import { useNavigate } from "react-router-dom";
+function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImageCapture }) { // Accept the onImageCapture prop from the parent
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-
+  const navigate = useNavigate();
   
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
         if (response.ok) {
           console.log('Image saved successfully!');
         } else {
-          console.error('Failed to save the image.');
+          console.error(`Failed to save the image.${response.statusText}`);
         }
       } catch (error) {
         console.error('Error saving image:', error);
@@ -64,48 +64,41 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
   };
 
   return (
-    <div className="container d-flex flex-column justify-content-center gradient-bg" style={{height: "100vh", margin: "0"}}>
-      <div className="d-flex" style={{width: "100vw"}}>
-        <div class="btn-group" style={{justifyContent: "space-evenly"}}>
-          <button flex-grow-1 type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Budget: <br/>{budget}
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" onClick={() => setBudget("Low")}>Low</a>
-            <a class="dropdown-item" href="#" onClick={() => setBudget("Medium")}>Medium</a>
-            <a class="dropdown-item" href="#" onClick={() => setBudget("High")}>High</a>
-            <a class="dropdown-item" href="#" onClick={() => setBudget("Super High")}>Super High</a>
+    <div className="container d-flex flex-column justify-content-center gradient-bg" style={{ height: "100vh", margin: "0" }}>
+      <div className="btn-group d-flex" style={{ width: "100%" }}>
+        <div className="btn-group" style={{ flex: 1 }}>
+          <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budget: <br />{budget}</button>
+          <div className="dropdown-menu">
+            <a className="dropdown-item" href="#" onClick={() => setBudget("Low")}>Low</a>
+            <a className="dropdown-item" href="#" onClick={() => setBudget("Medium")}>Medium</a>
+            <a className="dropdown-item" href="#" onClick={() => setBudget("High")}>High</a>
+            <a className="dropdown-item" href="#" onClick={() => setBudget("Super High")}>Super High</a>
           </div>
         </div>
-        <div class="btn-group" style={{justifyContent: "space-evenly"}}>
-          <button flex-grow-1 type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Store: <br/>{store}
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" onClick={() => setStore("Safeway")}>Safeway</a>
-            <a class="dropdown-item" href="#" onClick={() => setStore("Trader Joe's")}>Trader Joe's</a>
-            <a class="dropdown-item" href="#" onClick={() => setStore("Costco")}>Costco</a>
-            <a class="dropdown-item" href="#" onClick={() => setStore("Walmart")}>Walmart</a>
-            <a class="dropdown-item" href="#" onClick={() => setStore("Whole Foods")}>Whole Foods</a>
+        <div className="btn-group" style={{ flex: 1 }}>
+          <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Store: <br />{store}</button>
+          <div className="dropdown-menu">
+            <a className="dropdown-item" href="#" onClick={() => setStore("Safeway")}>Safeway</a>
+            <a className="dropdown-item" href="#" onClick={() => setStore("Trader Joe's")}>Trader Joe's</a>
+            <a className="dropdown-item" href="#" onClick={() => setStore("Costco")}>Costco</a>
+            <a className="dropdown-item" href="#" onClick={() => setStore("Walmart")}>Walmart</a>
+            <a className="dropdown-item" href="#" onClick={() => setStore("Whole Foods")}>Whole Foods</a>
           </div>
         </div>
-        <div class="btn-group" style={{justifyContent: "space-evenly"}}>
-          <button flex-grow-1 type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Health Importance:<br/>{health}
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" onClick={() => setHealth("Low")}>Low</a>
-            <a class="dropdown-item" href="#" onClick={() => setHealth("Medium")}>Medium</a>
-            <a class="dropdown-item" href="#" onClick={() => setHealth("High")}>High</a>
-            <div class="dropdown-divirde"></div>
-            <a class="dropdown-item" href="#" onClick={() => setHealth("Super High")}>Super High</a>
+        <div className="btn-group" style={{ flex: 1 }}>
+          <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Health Importance:<br />{health}</button>
+          <div className="dropdown-menu">
+            <a className="dropdown-item" href="#" onClick={() => setHealth("Low")}>Low</a>
+            <a className="dropdown-item" href="#" onClick={() => setHealth("Medium")}>Medium</a>
+            <a className="dropdown-item" href="#" onClick={() => setHealth("High")}>High</a>
+            <a className="dropdown-item" href="#" onClick={() => setHealth("Super High")}>Super High</a>
           </div>
         </div>
       </div>
       <h1 className="text-center text-white">Scan Item</h1>
-      <video ref={videoRef} autoPlay playsInline style={{ width: '100%', maxWidth: '607px', borderRadius: "10px" }} />
-      <button onClick={handleCapture} className="btn btn-primary align-self-center text-white">C</button>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      <video ref={videoRef} autoPlay playsInline style={{ width: "100%", maxWidth: "607px", borderRadius: "10px" }} />
+      <button onClick={() => { handleCapture(); navigate("/info"); }} className="btn btn-primary align-self-center text-white">C</button>
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
 }
