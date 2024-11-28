@@ -6,47 +6,59 @@ function Info({ health, budget, image, store, switchPage }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
 
-  const healthPrompt = `If the image does not depict food, respond only with: "Unrecognized food." For food, provide exactly:
-- Three health benefits (3-5 words each).
-- Three health drawbacks (3-5 words each).
-Do not add any extra text, introductions, or conclusions. Seperate the sections with a header for advantages and disadvantages`;
-  let budgetPrompt = `If the image does not depict food, respond only with: "Unrecognized food." For food, state:
-- Is this product within their budget: ${budget}? 
-- Is this product generally within budget?
-Answer in one readable sentence like: This product is within budget.`;
-let alternativesPrompt = `
-list:
-- 1-3 specific, in-store alternatives for this product, list the brand and name of the product, considering:
-  - Its health benefits/drawbacks.
-  - The user's health preference: ${health}.
-  - The user's budget is: ${budget}.
-  - The user is in ${store}
-Each alternative should be brief (3-5 words). Do not add any extra text, introductions, or conclusions. If the image is not food, respond with: "Unrecognized food."
-`;
+  const itemPrompt = `If this is not food, answer with exactly these words: "Not Food." Otherwise please say what the item in the picture is. For example, if it is Kraft Mac and Cheese, you would only say "Kraft Mac and Cheese".`
 
-  async function getInfo() {
+  async function getInfo(imageID) {
     setLoading(true);
     try {
-      const response1 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
-        prompt: healthPrompt,
+      const item = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
+        prompt: itemPrompt,
         image: image,
-        path: './images/image.png',
+        //path: './images/image.png',
         delete: false
       });
-      if(response1.data.information == "Unrecognized food.") {
-        budgetPrompt="Say: Unrecognized food"
-        alternativesPrompt="Say: Unrecognized food"
+      const food = item.data.information
+
+      if(food === "Not Food.") {
+        setInformation([
+          { information: "Unrecognized Food" },
+          { information: "Unrecognized Food" },
+          { information: "Unrecognized Food" },
+        ]);
+        return;
       }
+
+      const response1 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
+        prompt:  `List 3 pros and 3 cons of ${food} considering a ${health} health importance. These pros and cons need to be 3-5 words each. 
+
+        Format:
+         Pros:
+          - Pro 1
+          - Pro 2
+          - Pro 3
+         Cons:
+          - Con 1
+          - Con 2
+          - Con 3`,
+        delete: false
+      });
       const response2 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
-        prompt: budgetPrompt,
-        image: image,
-        path: './images/image.png',
+        prompt: `Considering a budget of: ${budget} and a health importance of: ${health}, 
+is the product "${food}" within budget? Respond with a simple yes or no. 
+If no, briefly explain why (e.g., too expensive, cheaper alternatives).`,
         delete: false
       });
       const response3 = await axios.post("https://smartshoppernov22.onrender.com/api/get-info", {
-        prompt: alternativesPrompt,
-        image: image,
-        path: './images/image.png',
+        prompt: `List 3 alternative products to ${food} available at ${store}. 
+- Prioritize options that fit the user's health importance: ${health} and budget: ${budget}.
+- Only list the product names, separated by commas (,) with no additional information.
+
+Format:
+- Item 1
+- Item 2
+- Item 3
+
+`,
         delete: true
       });
 
