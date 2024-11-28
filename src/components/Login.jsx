@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
 const Login = () => {
   const { loginWithEmail, loginWithGoogle } = useAuth();
@@ -27,22 +28,30 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleEmailLogin}>Login with Email</button>
-      <button onClick={handleGoogleLogin}>Login with Google</button>
+    <div className="login-container">
+      <div className="login-card">
+        <h1>Login</h1>
+        <input
+          type="email"
+          className="form-control"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          className="form-control"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="btn" onClick={handleEmailLogin}>
+          Login with Email
+        </button>
+        <button className="btn" onClick={handleGoogleLogin}>
+          Login with Google
+        </button>
+      </div>
     </div>
   );
 };

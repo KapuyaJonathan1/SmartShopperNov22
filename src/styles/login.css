@@ -1,0 +1,63 @@
+/* Center the form container */
+.login-container {
+  min-height: 100vh; /* Full screen height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../srcimages/loginbg.jpg");
+}
+
+/* Style the login card */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the header */
+.login-card h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #495057;
+}
+
+/* Style the inputs */
+.login-card input {
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+/* Style the buttons */
+.login-card button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Primary button style */
+.login-card button:first-of-type {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.login-card button:first-of-type:hover {
+  background-color: #0056b3;
+}
+
+/* Secondary button style */
+.login-card button:last-of-type {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.login-card button:last-of-type:hover {
+  background-color: #5a6268;
+}
