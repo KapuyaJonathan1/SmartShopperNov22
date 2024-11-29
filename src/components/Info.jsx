@@ -19,7 +19,7 @@ function Info({ health, budget, image, store, switchPage }) {
       });
       const food = item.data.information
 
-      if(food === "Not Food.") {
+      if(food === "Not Food") {
         setInformation([
           { information: "Unrecognized Food" },
           { information: "Unrecognized Food" },
