@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import './App.css'
 import './styles/scanner.css';
 import './styles/info.css';
 import Scanner from './components/Scanner';

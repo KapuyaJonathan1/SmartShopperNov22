@@ -10,12 +10,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box; /* Ensure padding is included in width/height */
-  background: white;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%; /* Ensure the body and html take up 100% height */
-  overflow-y: hidden; /* Prevent horizontal scrolling */
+  overflow: hidden; /* Prevent horizontal scrolling */
 }

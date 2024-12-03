@@ -64,8 +64,9 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
   };
 
   return (
-    <div className="container d-flex flex-column justify-content-center gradient-bg" style={{ height: "100vh", margin: "0" }}>
-      <div className="btn-group d-flex" style={{ width: "100%" }}>
+    <div className="container d-flex flex-column justify-content-center align-items-center gradient-bg" style={{ height: "100vh", margin: "0", width: "100%" }}>
+      <h1 className="text-center text-white bg-transparent">Scan Item</h1>
+      <div className="buttons btn-group d-flex" style={{ width: "100%" }}>
         <div className="btn-group" style={{ flex: 1 }}>
           <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Budget: <br />{budget}</button>
           <div className="dropdown-menu">
@@ -95,9 +96,8 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
           </div>
         </div>
       </div>
-      <h1 className="text-center text-white">Scan Item</h1>
-      <video ref={videoRef} autoPlay playsInline style={{ width: "100%", maxWidth: "607px", borderRadius: "10px" }} />
-      <button onClick={() => { handleCapture(); navigate("/info"); }} className="btn btn-primary align-self-center text-white">C</button>
+      <video className="video" ref={videoRef} autoPlay playsInline />
+      <button onClick={() => { handleCapture(); navigate("/info"); }} className="btn btn-primary capture align-self-center text-white">C</button>
       <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );

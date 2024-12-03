@@ -84,20 +84,20 @@ Format:
   }
 
   return (
-    <div className="container d-flex flex-column gradient-bg" style={{ height: "100vh" }}>
-      <div className="small-section">
+    <div className="container justify-content-center align-items-center d-flex flex-column gradient-bg" style={{ height: "100vh" }}>
+      <div className="small-section d-flex flex-column  justify-content-center align-items-center">
         <h1 className="text-center text-white">Product Information</h1>
-        <div className="text-center">
+
           {image ? (
             <img
               src={image}
               alt="Captured"
-              style={{ width: "50%", maxWidth: "600px", borderRadius: "10px" }}
+              style={{maxWidth: "600px", borderRadius: "10px" }}
             />
           ) : (
             <p className="text-white">No image captured yet.</p>
           )}
-        </div>
+
       </div>
       <div className="info-section">
         <div className="info-box">
@@ -113,7 +113,7 @@ Format:
           <p className="response-text">{information[2]?.information || ""}</p>
         </div>
       </div>
-      <div className="d-flex justify-content-center align-items-center" style={{ marginTop: "auto", padding: "20px" }}>
+      <div className="bottom-container d-flex justify-content-center align-items-center" style={{ marginTop: "auto", padding: "20px" }}>
         <button onClick={handleInformation} className="btn btn-primary" disabled={loading} style={{display: `${information[2] ? "none" : "inline-block"}`}}> 
           {loading ? "Fetching..." : "Get Info"}
         </button>
