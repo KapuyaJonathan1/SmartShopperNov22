@@ -1,4 +1,9 @@
 /* Updated CSS */
+
+.capture {
+  margin-bottom: 25px;
+}
+
 .gradient-bg {
   background: linear-gradient(270deg, #4a148c, #c53eff, #8e24aa, #ba68c8);
   background-size: 400% 400%;
@@ -36,11 +41,11 @@
   }
 
   .video {
-    width: 65%;
+    width: 55%;
     height: 50%;
     border-radius: 20px;
     background-color: pink;
-    margin: 50px;
+    margin: 25px;
   }
 
 }
@@ -70,11 +75,11 @@
   }
 
   .video {
-    width: 60%;
+    width: 55%;
     height: 50%;
     border-radius: 20px;
     background-color: pink;
-    margin: 50px;
+    margin: 25px;
   }
 
 }
@@ -112,7 +117,7 @@
     height: 50%;
     border-radius: 20px;
     background-color: pink;
-    margin: 50px;
+    margin: 25px;
   }
 
 }
@@ -145,7 +150,7 @@
     height: 50%;
     border-radius: 20px;
     background-color: pink;
-    margin: 50px;
+    margin: 25px;
   }
 
 }
