@@ -9,7 +9,7 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
   useEffect(() => {
     async function startCamera() {
       try {
-        const constraints = { video: { facingMode: "user" } };
+        const constraints = { video: { facingMode: "environment" } };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
