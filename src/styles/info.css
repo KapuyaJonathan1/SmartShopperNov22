@@ -5,7 +5,6 @@
   align-items: stretch; /* Ensure all boxes have the same height */
   gap: 5px; /* Add spacing between sections */
   margin: 10px 0; /* Add margin around the container */
-  justify-content: center;
 }
 
 .bottom-container {
