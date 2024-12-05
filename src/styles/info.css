@@ -7,6 +7,10 @@
   margin: 20px 0; /* Add margin around the container */
 }
 
+.bottom-container {
+  margin-bottom: 40px;
+}
+
 .info-box {
   background-color: rgba(255, 255, 255, 0.1); /* Add a subtle background for separation */
   padding: 15px;
@@ -17,6 +21,11 @@
   display: flex; /* Allows inner content alignment */
   flex-direction: column; /* Keep content vertically aligned */
   justify-content: flex-start; /* Align content evenly inside */
+}
+
+h1 {
+  margin: 10px;
+  font-size: 25px;
 }
 
 .response-text {
@@ -73,7 +82,7 @@
   }
 
   img {
-    width: 80%;
+    width: 50%;
   }
 
   .info-box {
@@ -112,4 +121,23 @@
   }
 
 
+}
+
+@media (min-height: 800px) {
+  img {
+    width: 80%;
+  }
+
+  h1 {
+    font-size: 35px;
+  }
+
+  .info-box {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .bottom-container {
+    margin-bottom: 50px;
+  }
 }
