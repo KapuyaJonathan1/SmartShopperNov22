@@ -9,7 +9,8 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
   useEffect(() => {
     async function startCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const constraints = { video: { facingMode: "user" } };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
@@ -17,7 +18,7 @@ function Scanner({ setHealth, setBudget, health, budget, setStore, store, onImag
         console.error("Error accessing the camera:", error);
       }
     }
-
+  
     startCamera();
 
     return () => {

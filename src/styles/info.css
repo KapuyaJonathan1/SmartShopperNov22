@@ -3,8 +3,9 @@
   flex-direction: row; /* Align boxes horizontally */
   justify-content: space-evenly; /* Evenly space the boxes */
   align-items: stretch; /* Ensure all boxes have the same height */
-  gap: 20px; /* Add spacing between sections */
-  margin: 20px 0; /* Add margin around the container */
+  gap: 5px; /* Add spacing between sections */
+  margin: 10px 0; /* Add margin around the container */
+  justify-content: center;
 }
 
 .bottom-container {
